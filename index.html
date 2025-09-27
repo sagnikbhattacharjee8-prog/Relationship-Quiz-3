@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Anonymous Relationship Quiz 3.0</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; padding: 0; }
-    .page { display: none; padding: 20px; text-align: center; }
-    .active { display: block; }
-    .container { background: #fff; max-width: 700px; margin: 30px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
-    h1, h2, h3 { color: #333; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; background: #4CAF50; color: white; }
-    button:hover { background: #45a049; }
-    .sponsors { margin-top: 20px; }
-    .sponsors img { height: 40px; margin: 0 10px; vertical-align: middle; border-radius: 6px; }
-    input, textarea, select { width: 90%; padding: 10px; margin-top: 15px; border: 1px solid #ccc; border-radius: 8px; }
-    textarea { resize: vertical; min-height: 80px; }
-  </style>
+<meta charset="UTF-8">
+<title>Anonymous Relationship Quiz 3.0</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; padding: 0; }
+  .page { display: none; padding: 20px; text-align: center; }
+  .active { display: block; }
+  .container { background: #fff; max-width: 700px; margin: 30px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+  h1, h2, h3 { color: #333; }
+  button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; background: #4CAF50; color: white; }
+  button:hover { background: #45a049; }
+  .sponsors { margin-top: 20px; }
+  .sponsors img { height: 40px; margin: 0 10px; vertical-align: middle; border-radius: 6px; }
+  input, textarea, select { width: 90%; padding: 10px; margin-top: 15px; border: 1px solid #ccc; border-radius: 8px; }
+  textarea { resize: vertical; min-height: 80px; }
+  #progressContainer { width: 100%; background: #ddd; border-radius: 12px; margin-bottom: 20px; height: 15px; }
+  #progressBar { width: 0%; height: 100%; background: #4CAF50; border-radius: 12px; }
+  label { display: inline-block; margin: 10px; }
+</style>
 </head>
 <body>
 
@@ -41,10 +44,6 @@
       <li>Minimum 10 words for descriptive answers.</li>
     </ul>
     <button onclick="nextPage('disclaimer')">Continue</button>
-    <div class="sponsors">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
-    </div>
   </div>
 
   <!-- Disclaimer -->
@@ -52,10 +51,6 @@
     <h2>Disclaimer</h2>
     <p>This quiz is for fun and awareness only. We do not store your identity. Proceed only if you are comfortable.</p>
     <button onclick="nextPage('userinfo')">Continue</button>
-    <div class="sponsors">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
-    </div>
   </div>
 
   <!-- User Info -->
@@ -73,21 +68,14 @@
       </select>
       <button type="button" onclick="startQuiz()">Start Quiz</button>
     </form>
-    <div class="sponsors">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
-    </div>
   </div>
 
   <!-- Questions -->
   <div class="page" id="questions">
+    <div id="progressContainer"><div id="progressBar"></div></div>
     <h2 id="qText"></h2>
     <div id="answerBox"></div>
     <button onclick="nextQuestion()">Next</button>
-    <div class="sponsors">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
-    </div>
   </div>
 
   <!-- Credits -->
@@ -95,27 +83,23 @@
     <h2>Credits</h2>
     <p>Thanks for completing Quiz 3.0. Your responses will be submitted anonymously.</p>
     <button onclick="document.getElementById('quizForm').submit()">Submit</button>
-    <div class="sponsors">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
-      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
-    </div>
   </div>
 
 </div>
 
 <script>
-  const pages = ["landing","rules","disclaimer","userinfo","questions","credits"];
-  let currentPage = 0;
-  let currentQuestion = 0;
+const pages = ["landing","rules","disclaimer","userinfo","questions","credits"];
+let currentPage = 0;
+let currentQuestion = 0;
 
-  const questions = [
+const questions = [
 `1. Are you a Virgin ? - Yes / No Button`,
 `2. Your Body Count ?`,
 `3. Name Top 6 Valuable Persons in from your life.`,
 `4. In a situation, You have to have s*x with the 3 names you mentioned, and the other 3 will be Cuckolded. Mention whom you will you have it and who will be Cuckolded.`,
 `5. As per your idea who will perform the best Among these persons, Rank Them. (Example 1st Mr. Abc 2nd Ms. Bdc)`,
 `6. Name Your Ex(s).`,
-`7. Mention how you came into a  relationship with them, How they or you approached.`,
+`7. Mention how you came into a relationship with them, How they or you approached.`,
 `8. Mention How your Partner Convinced you for loosing your virginity. (Explain the conversation)`,
 `9. Mention how it happened last time you had s*x. (Planing and Conversation)`,
 `10. What is the most discomfort you face while traveling on your 1st day of periods ?`,
@@ -150,48 +134,64 @@
 - It is seen as morally wrong in many cultures.
 - It can lead to health and social risks.
 - Waiting builds trust and respect in marriage.`
-  ];
+];
 
-  function nextPage(pageId) {
-    document.getElementById(pages[currentPage]).classList.remove("active");
-    currentPage = pages.indexOf(pageId);
-    document.getElementById(pageId).classList.add("active");
-  }
+function nextPage(pageId) {
+  document.getElementById(pages[currentPage]).classList.remove("active");
+  currentPage = pages.indexOf(pageId);
+  document.getElementById(pageId).classList.add("active");
+}
 
-  function startQuiz() {
-    document.getElementById("uid").value = "UID-" + Math.floor(Math.random()*1000000);
-    nextPage('questions');
-    showQuestion();
-  }
+function startQuiz() {
+  document.getElementById("uid").value = "UID-" + Math.floor(Math.random()*1000000);
+  nextPage('questions');
+  showQuestion();
+}
 
-  function showQuestion() {
-    if(currentQuestion < questions.length) {
-      document.getElementById("qText").innerText = questions[currentQuestion];
-      let qNum = currentQuestion+1;
-      if(questions[currentQuestion].includes("Yes / No Button")) {
-        document.getElementById("answerBox").innerHTML = `
-          <label><input type="radio" name="Q${qNum}" value="Yes" required> Yes</label>
-          <label><input type="radio" name="Q${qNum}" value="No" required> No</label>`;
-      } else {
-        document.getElementById("answerBox").innerHTML = `<textarea name="Q${qNum}" required></textarea>`;
-      }
+function showQuestion() {
+  if(currentQuestion < questions.length) {
+    document.getElementById("qText").innerText = questions[currentQuestion];
+    let qNum = currentQuestion + 1;
+    if(questions[currentQuestion].includes("Yes / No Button")) {
+      document.getElementById("answerBox").innerHTML = `
+        <label><input type="radio" name="Q${qNum}" value="Yes" required> Yes</label>
+        <label><input type="radio" name="Q${qNum}" value="No" required> No</label>`;
     } else {
-      nextPage('credits');
+      document.getElementById("answerBox").innerHTML = `<textarea name="Q${qNum}" required></textarea>`;
     }
+
+    // Update progress bar
+    let progressPercent = Math.round((currentQuestion / questions.length) * 100);
+    document.getElementById("progressBar").style.width = progressPercent + "%";
+  } else {
+    document.getElementById("progressBar").style.width = "100%";
+    nextPage('credits');
+  }
+}
+
+function nextQuestion() {
+  let inputs = document.querySelectorAll("#answerBox input, #answerBox textarea");
+  let valid = false;
+  inputs.forEach(input => {
+    if((input.type === "radio" && input.checked) || (input.tagName==="TEXTAREA" && input.value.trim().length >= 10)) {
+      valid = true;
+    }
+  });
+  if(!valid) { 
+    alert("Answer too short. Minimum 10 words required (or select Yes/No)."); 
+    return; 
   }
 
-  function nextQuestion() {
-    let inputs = document.querySelectorAll("#answerBox input, #answerBox textarea");
-    let valid = false;
-    inputs.forEach(input => {
-      if((input.type === "radio" && input.checked) || (input.tagName==="TEXTAREA" && input.value.trim().length >= 10)) {
-        valid = true;
-      }
-    });
-    if(!valid) { alert("Answer too short. Minimum 10 words required (or select Yes/No)."); return; }
-    currentQuestion++;
-    showQuestion();
-  }
+  // Append dynamic input to form if not already
+  inputs.forEach(input => {
+    if(!document.getElementById("quizForm").contains(input)){
+      document.getElementById("quizForm").appendChild(input);
+    }
+  });
+
+  currentQuestion++;
+  showQuestion();
+}
 </script>
 
 </body>
