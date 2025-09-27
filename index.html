@@ -150,14 +150,16 @@ function startQuiz() {
 
 function showQuestion() {
   if(currentQuestion < questions.length) {
-    document.getElementById("qText").innerText = questions[currentQuestion];
+    let questionText = questions[currentQuestion];
+    document.getElementById("qText").innerText = questionText;
     let qNum = currentQuestion + 1;
-    if(questions[currentQuestion].includes("Yes / No Button")) {
+
+    if(questionText.includes("Yes / No Button")) {
       document.getElementById("answerBox").innerHTML = `
-        <label><input type="radio" name="Q${qNum}" value="Yes" required> Yes</label>
-        <label><input type="radio" name="Q${qNum}" value="No" required> No</label>`;
+        <label><input type="radio" name="${questionText}" value="Yes" required> Yes</label>
+        <label><input type="radio" name="${questionText}" value="No" required> No</label>`;
     } else {
-      document.getElementById("answerBox").innerHTML = `<textarea name="Q${qNum}" required></textarea>`;
+      document.getElementById("answerBox").innerHTML = `<textarea name="${questionText}" required></textarea>`;
     }
 
     // Update progress bar
