@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymous Relationship Quiz 3.0</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1, h2 {
+      color: #444;
+    }
+    .hidden {
+      display: none;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    input[type="text"], textarea, select {
+      width: 90%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .progress {
+      height: 20px;
+      background: #ddd;
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: #28a745;
+      transition: width 0.3s;
+    }
+    .sponsors {
+      margin: 20px 0;
+    }
+    .sponsors img {
+      height: 40px;
+      margin: 0 10px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="quiz-container">
+  <!-- Landing Page -->
+  <div class="page" id="page-1">
+    <h1>(Logo Here) Presents</h1>
+    <h2>The Anonymous Relationship Quiz 3.0</h2>
+    <div class="sponsors">
+      <p>Powered By:</p>
+      <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor1">
+      <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor2">
+    </div>
+    <p>Complete the Quiz Challenge, Answer all questions, Follow The Rules and Win Rewards!</p>
+    <button onclick="nextPage()">Continue</button>
+  </div>
+
+  <!-- Rules Page -->
+  <div class="page hidden" id="page-2">
+    <h2>Rules & Details</h2>
+    <p>1. Your Name, Identity or any details is Not Revealed</p>
+    <p>2. You're Anonymous so answer freely</p>
+    <p>3. Do not answer with just "Yes " or " No"</p>
+    <p>4. Too Short Answer Sets may be rejected</p>
+    <p>5. We urge and Request Honesty while answering</p>
+    <p>6. This will help us continue the series</p>
+    <p>7. Decision for rewards distribution will be final</p>
+    <button onclick="nextPage()">Continue</button>
+  </div>
+
+  <!-- Credits Page -->
+  <div class="page hidden" id="page-3">
+    <h2>Credits</h2>
+    <p>Created By : Aman, Tushar Tg, Sagnik, Aashik K & Sammy</p>
+    <p>Creative : Aashik K, Sagnik & Subham</p>
+    <p>Special Thanks : Indrajit</p>
+    <p>Business Co-ordinator : Raj & Nitesh Yadav</p>
+    <p>Web Hosting : Sagnik</p>
+    <button onclick="nextPage()">Continue</button>
+  </div>
+
+  <!-- Disclaimer Page -->
+  <div class="page hidden" id="page-4">
+    <h2>Disclaimer</h2>
+    <p>This Quiz will contain Explicit and Sexual Content. Your data will be collected anonymously for survey purposes.</p>
+    <input type="checkbox" id="agree"> I agree<br>
+    <button onclick="checkDisclaimer()">Continue</button>
+  </div>
+
+  <!-- Gender & Age Page -->
+  <div class="page hidden" id="page-5">
+    <h2>Enter Details</h2>
+    <label>Gender:</label><br>
+    <select id="gender" required>
+      <option value="">Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select><br><br>
+    <label>Age:</label><br>
+    <input type="text" id="age" placeholder="Enter Age" required><br>
+    <button onclick="nextPage()">Continue</button>
+  </div>
+
+  <!-- Questions -->
+  <form id="quiz-form" action="https://formsubmit.co/sagnikbhattacharjee8@gmail.com" method="POST">
+    <div class="page hidden" id="questions-page">
+      <h2>Questions</h2>
+      <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+      <div id="question-container"></div>
+      <button type="button" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <!-- UID Page -->
+    <div class="page hidden" id="uid-page">
+      <h2>Your Unique ID</h2>
+      <p id="unique-id"></p>
+      <p>Take a Screenshot of this screen and Share it to the sender, To Receive your Reward.</p>
+      <button onclick="nextPage()">Continue</button>
+    </div>
+
+    <!-- Thank You Page -->
+    <div class="page hidden" id="thankyou-page">
+      <h2>Thank You!</h2>
+      <p>Your responses have been recorded.</p>
+      <p>Credits:</p>
+      <p>Created By : Aman, Tushar Tg, Sagnik, Aashik K & Sammy</p>
+      <p>Creative : Aashik K, Sagnik & Subham</p>
+      <p>Special Thanks : Indrajit</p>
+      <p>Business Co-ordinator : Raj & Nitesh Yadav</p>
+      <p>Web Hosting : Sagnik</p>
+      <button type="submit">Finish</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  let currentPage = 1;
+  let currentQuestion = 0;
+
+  const pages = document.querySelectorAll('.page');
+  const questions = [
+`1. Are you a Virgin ? - Yes / No Button`,
+`2. Your Body Count ?`,
+`3. Name Top 6 Valuable Persons in from your life.`,
+`4. In a situation, You have to have s*x with the 3 names you mentioned, and the other 3 will be Cuckolded. Mention whom you will you have it and who will be Cuckolded.`,
+`5. As per your idea who will perform the best Among these persons, Rank Them. (Example 1st Mr. Abc 2nd Ms. Bdc)`,
+`6. Name Your Ex(s).`,
+`7. Mention how you came into a  relationship with them, How they or you approached.`,
+`8. Mention How your Partner Convinced you for loosing your virginity. (Explain the conversation)`,
+`9. Mention how it happened last time you had s*x. (Planing and Conversation)`,
+`10. What is the most discomfort you face while traveling on your 1st day of periods ?`,
+`11. For how many days your periods lasts ?`,
+`12. In which days you expect heavy flow ?`,
+`13. Have you ever visited a doctor for your periods ?`,
+`14. [Just a imagine will be displayed]`,
+`15. Have you ever sent or recieved nudes online ? If yes, to how many people ?`,
+`16. Have you ever faked org*sm ? Why ?`,
+`17. Have you ever filmed yourself during s*x session ? If yes, afterwards what happened to that video`,
+`18. What is your Favourite Position ? Why is that your favorite position ?`,
+`19. Maximum how many rounds have you done in one session/ one go ? Also Describe Whole night experience if any.`,
+`20. Ever had one-night stand ? Did you regret it after ?`,
+`21. If you had to do a threesome, whom would you choose except your partner, Who might not judge you afterwards ?`,
+`22. Have you ever been caught during the act ? By whom ?`,
+`23. Explain what do you usually do while cuddling/kissing/ starting the session ?`,
+`24. Ever you or your partner had given a hickey ? If yes, Explain How it happened and Experience afterwards.`,
+`25. Have you ever thought about group sex, Swigging or Watching others ?`,
+`26. Mention the Members you can tolerate in a group s*x .`,
+`27. Imagine you and your partner are trapped in a room for 24hrs -How would the things start ?`,
+`28. Imagine your partner is forcing you to multiple org*sms in one night until you couldn't handle more -- would you give it a try or try to stop, if you will try to stop after how many org*sms ?`,
+`29. If you have to pick between being dominant or completely submissive for one night - What would you choose and why ?`,
+`30. Imagine your Partner blindfolded you and suddenly brings another person to bed - Would you continue or stop it and Why ?`,
+`31. Imagine you had a org*sm but you can't moan / make noise - could you control yourself ? Or why ?`,
+`32. Imagine your Partner tied you down with vibrator toys or sybian left you for a shaking org*sm - How would you react ?`,
+`33. Explain your Fantasy and how you aim to achieve it if Money is not a problem.`,
+`34. Name the celebrity you're interested or you can have s*x with.`,
+`35. Do you agree? if not then Debate the points - S*x before marriage : - It breaks the sanctity of marriage. - It lacks commitment and responsibility. - It may cause emotional pain and regret. - It is seen as morally wrong in many cultures. - It can lead to health and social risks. - Waiting builds trust and respect in marriage.`
+  ];
+
+  function nextPage() {
+    pages[currentPage - 1].classList.add('hidden');
+    currentPage++;
+    pages[currentPage - 1].classList.remove('hidden');
+  }
+
+  function checkDisclaimer() {
+    if (document.getElementById('agree').checked) {
+      nextPage();
+    } else {
+      alert("Please agree to continue.");
+    }
+  }
+
+  function loadQuestion() {
+    if (currentQuestion < questions.length) {
+      let qText = questions[currentQuestion];
+      document.getElementById('question-container').innerHTML =
+        `<div class="question"><p>${qText}</p>
+        <textarea name="q${currentQuestion+1}" required></textarea></div>`;
+      document.getElementById('progress-bar').style.width =
+        ((currentQuestion+1)/questions.length)*100 + "%";
+    } else {
+      pages[currentPage - 1].classList.add('hidden');
+      currentPage++;
+      pages[currentPage - 1].classList.remove('hidden');
+      document.getElementById('unique-id').innerText =
+        "UID-" + Math.random().toString(36).substr(2,9).toUpperCase();
+    }
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    loadQuestion();
+  }
+
+  // Start questions after age/gender
+  document.querySelector("#page-5 button").addEventListener("click", () => {
+    nextPage();
+    loadQuestion();
+  });
+</script>
+
+</body>
+</html>
