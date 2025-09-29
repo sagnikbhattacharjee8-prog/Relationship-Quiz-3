@@ -1,200 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Anonymous Relationship Quiz 3.0</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; padding: 0; }
-  .page { display: none; padding: 20px; text-align: center; }
-  .active { display: block; }
-  .container { background: #fff; max-width: 700px; margin: 30px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
-  h1, h2, h3 { color: #333; }
-  button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; background: #4CAF50; color: white; }
-  button:hover { background: #45a049; }
-  .sponsors { margin-top: 20px; }
-  .sponsors img { height: 40px; margin: 0 10px; vertical-align: middle; border-radius: 6px; }
-  input, textarea, select { width: 90%; padding: 10px; margin-top: 15px; border: 1px solid #ccc; border-radius: 8px; }
-  textarea { resize: vertical; min-height: 80px; }
-  #progressContainer { width: 100%; background: #ddd; border-radius: 12px; margin-bottom: 20px; height: 15px; }
-  #progressBar { width: 0%; height: 100%; background: #4CAF50; border-radius: 12px; }
-  label { display: inline-block; margin: 10px; }
-</style>
+  <meta charset="UTF-8">
+  <title>Anonymous Relationship Quiz 3.0</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 0; padding: 0; }
+    .page { display: none; padding: 20px; text-align: center; }
+    .active { display: block; }
+    .container { background: #fff; max-width: 800px; margin: 30px auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+    h1, h2, h3 { color: #333; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; background: #007BFF; color: #fff; }
+    button:hover { background: #0056b3; }
+    textarea, input, select { width: 90%; padding: 10px; margin-top: 15px; border-radius: 6px; border: 1px solid #ccc; font-size: 15px; }
+    .progress { height: 20px; background: #ddd; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+    .progress-bar { height: 100%; background: #007BFF; width: 0%; transition: width 0.3s ease; }
+    .sponsors { display: flex; justify-content: center; gap: 20px; margin: 15px 0; }
+    .sponsors img { height: 40px; border-radius: 5px; }
+  </style>
 </head>
 <body>
-
-<div class="container">
-
-  <!-- Landing -->
-  <div class="page active" id="landing">
-    <h1>Anonymous Relationship Quiz 3.0</h1>
-    <p>Welcome to the most daring and anonymous relationship quiz.</p>
-    <button onclick="nextPage('rules')">Continue</button>
+  <div class="container">
     <div class="sponsors">
       <img src="WhatsApp Image 2025-09-13 at 10.49.05 PM (1).jpeg" alt="Sponsor 1">
       <img src="WhatsApp Image 2025-09-13 at 10.49.04 PM (1).jpeg" alt="Sponsor 2">
     </div>
-  </div>
 
-  <!-- Rules -->
-  <div class="page" id="rules">
-    <h2>Rules</h2>
-    <ul style="text-align:left; display:inline-block;">
-      <li>Be honest while answering.</li>
-      <li>Your answers will remain anonymous.</li>
-      <li>Minimum 10 words for descriptive answers.</li>
-    </ul>
-    <button onclick="nextPage('disclaimer')">Continue</button>
-  </div>
-
-  <!-- Disclaimer -->
-  <div class="page" id="disclaimer">
-    <h2>Disclaimer</h2>
-    <p>This quiz is for fun and awareness only. We do not store your identity. Proceed only if you are comfortable.</p>
-    <button onclick="nextPage('userinfo')">Continue</button>
-  </div>
-
-  <!-- User Info -->
-  <div class="page" id="userinfo">
-    <h2>Your Details</h2>
     <form id="quizForm" action="https://formsubmit.co/sagnikbhattacharjee8@gmail.com" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" id="uid" name="Unique ID">
-      <input type="number" name="Age" placeholder="Enter your age" required>
-      <select name="Gender" required>
-        <option value="" disabled selected>Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-      <button type="button" onclick="startQuiz()">Start Quiz</button>
+      
+      <!-- Progress Bar -->
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      
+      <!-- Landing Page -->
+      <div class="page active" id="page1">
+        <h1>Presents<br>Anonymous Relationship Quiz 3.0</h1>
+        <button type="button" onclick="nextPage()">Continue</button>
+      </div>
+
+      <!-- Rules Page -->
+      <div class="page" id="page2">
+        <h2>Rules</h2>
+        <p>Answer honestly. Minimum word limits apply. All questions are mandatory.</p>
+        <button type="button" onclick="nextPage()">Continue</button>
+      </div>
+
+      <!-- Credits Page -->
+      <div class="page" id="page3">
+        <h2>Credits</h2>
+        <p>Created by: Aman, Tushar Tg, Sagnik, Aashik K & Sammy</p>
+        <p>Creative: Aashik K, Sagnik & Subham</p>
+        <p>Special Thanks: Indrajit</p>
+        <p>Business Coordinator: Raj & Nitesh Yadav</p>
+        <p>Web Hosting: Sagnik</p>
+        <button type="button" onclick="nextPage()">Continue</button>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="page" id="page4">
+        <h2>Disclaimer</h2>
+        <p>This Quiz will contain Explicit and Sexual Content.</p>
+        <label><input type="checkbox" id="agree"> I agree</label><br>
+        <button type="button" onclick="checkDisclaimer()">Continue</button>
+      </div>
+
+      <!-- Gender + Age Page -->
+      <div class="page" id="page5">
+        <h2>Your Details</h2>
+        <label>Age: <input type="number" name="age" required></label><br><br>
+        <label>Gender:
+          <select name="gender" required>
+            <option value="">-- Select --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
+        <button type="button" onclick="nextPage()">Continue</button>
+      </div>
+
+      <!-- Questions Pages will be dynamically injected here -->
+      <div class="page" id="questionsPage"></div>
+
+      <!-- UID Page -->
+      <div class="page" id="uidPage">
+        <h2>Your Unique ID</h2>
+        <p id="uidText"></p>
+        <p>Take a screenshot of this screen and share it with the sender to receive your reward.</p>
+        <button type="button" onclick="nextPage()">Continue</button>
+      </div>
+
+      <!-- Thank You / Final Credits -->
+      <div class="page" id="thankPage">
+        <h2>Thank You!</h2>
+        <p>Your answers have been recorded.</p>
+        <p>Credits: Same as before, including Web Hosting: Sagnik</p>
+        <button type="submit">Submit</button>
+      </div>
+
     </form>
   </div>
 
-  <!-- Questions -->
-  <div class="page" id="questions">
-    <div id="progressContainer"><div id="progressBar"></div></div>
-    <h2 id="qText"></h2>
-    <div id="answerBox"></div>
-    <button onclick="nextQuestion()">Next</button>
-  </div>
-
-  <!-- Credits -->
-  <div class="page" id="credits">
-    <h2>Credits</h2>
-    <p>Thanks for completing Quiz 3.0. Your responses will be submitted anonymously.</p>
-    <button onclick="document.getElementById('quizForm').submit()">Submit</button>
-  </div>
-
-</div>
-
 <script>
-const pages = ["landing","rules","disclaimer","userinfo","questions","credits"];
-let currentPage = 0;
-let currentQuestion = 0;
+  const pages = document.querySelectorAll('.page');
+  let currentPage = 0;
 
-const questions = [
-`1. Are you a Virgin ? - Yes / No Button`,
-`2. Your Body Count ?`,
-`3. Name Top 6 Valuable Persons in from your life.`,
-`4. In a situation, You have to have s*x with the 3 names you mentioned, and the other 3 will be Cuckolded. Mention whom you will you have it and who will be Cuckolded.`,
-`5. As per your idea who will perform the best Among these persons, Rank Them. (Example 1st Mr. Abc 2nd Ms. Bdc)`,
-`6. Name Your Ex(s).`,
-`7. Mention how you came into a relationship with them, How they or you approached.`,
-`8. Mention How your Partner Convinced you for loosing your virginity. (Explain the conversation)`,
-`9. Mention how it happened last time you had s*x. (Planing and Conversation)`,
-`10. What is the most discomfort you face while traveling on your 1st day of periods ?`,
-`11. For how many days your periods lasts ?`,
-`12. In which days you expect heavy flow ?`,
-`13. Have you ever visited a doctor for your periods ?`,
-`14. [Just a imagine will be displayed]`,
-`15. Have you ever sent or recieved nudes online ? If yes, to how many people ?`,
-`16. Have you ever faked org*sm ? Why ?`,
-`17. Have you ever filmed yourself during s*x session ? If yes, afterwards what happened to that video`,
-`18. What is your Favourite Position ? Why is that your favorite position ?`,
-`19. Maximum how many rounds have you done in one session/ one go ? Also Describe Whole night experience if any.`,
-`20. Ever had one-night stand ? Did you regret it after ?`,
-`21. If you had to do a threesome, whom would you choose except your partner, Who might not judge you afterwards ?`,
-`22. Have you ever been caught during the act ? By whom ?`,
-`23. Explain what do you usually do while cuddling/kissing/ starting the session ?`,
-`24. Ever you or your partner had given a hickey ? If yes, Explain How it happened and Experience afterwards.`,
-`25. Have you ever thought about group sex, Swigging or Watching others ?`,
-`26. Mention the Members you can tolerate in a group s*x .`,
-`27. Imagine you and your partner are trapped in a room for 24hrs -How would the things start ?`,
-`28. Imagine your partner is forcing you to multiple org*sms in one night until you couldn't handle more -- would you give it a try or try to stop, if you will try to stop after how many org*sms ?`,
-`29. If you have to pick between being dominant or completely submissive for one night - What would you choose and why ?`,
-`30. Imagine your Partner blindfolded you and suddenly brings another person to bed - Would you continue or stop it and Why ?`,
-`31. Imagine you had a org*sm but you can't moan / make noise - could you control yourself ? Or why ?`,
-`32. Imagine your Partner tied you down with vibrator toys or sybian left you for a shaking org*sm - How would you react ?`,
-`33. Explain your Fantasy and how you aim to achieve it if Money is not a problem.`,
-`34. Name the celebrity you're interested or you can have s*x with.`,
-`35. Do you agree? if not then Debate the points - S*x before marriage : 
-- It breaks the sanctity of marriage.
-- It lacks commitment and responsibility.
-- It may cause emotional pain and regret.
-- It is seen as morally wrong in many cultures.
-- It can lead to health and social risks.
-- Waiting builds trust and respect in marriage.`
-];
+  const progressBar = document.getElementById('progressBar');
 
-function nextPage(pageId) {
-  document.getElementById(pages[currentPage]).classList.remove("active");
-  currentPage = pages.indexOf(pageId);
-  document.getElementById(pageId).classList.add("active");
-}
+  const questions = [
+    "Are you a Virgin ?",
+    "Your Body Count ?",
+    "Name Top 6 Valuable Persons from your life.",
+    "In a situation, You have to have s*x with the 3 names you mentioned, and the other 3 will be Cuckolded. Mention whom you will have it and who will be Cuckolded.",
+    "As per your idea who will perform the best Among these persons, Rank Them. (Example 1st Mr. Abc 2nd Ms. Bdc)",
+    "Name Your Ex(s).",
+    "Mention how you came into a relationship with them, How they or you approached.",
+    "Mention How your Partner Convinced you for losing your virginity. (Explain the conversation)",
+    "Mention how it happened last time you had s*x. (Planning and Conversation)",
+    "What is the most discomfort you face while traveling on your 1st day of periods ?",
+    "For how many days your periods last ?",
+    "In which days you expect heavy flow ?",
+    "Have you ever visited a doctor for your periods ?",
+    "[Image Question Placeholder]",
+    "Have you ever sent or received nudes online ? If yes, to how many people ?",
+    "Have you ever faked org*sm ? Why ?",
+    "Have you ever filmed yourself during s*x session ? If yes, afterwards what happened to that video",
+    "What is your Favourite Position ? Why is that your favorite position ?",
+    "Maximum how many rounds have you done in one session/ one go ? Also Describe Whole night experience if any.",
+    "Ever had one-night stand ? Did you regret it after ?",
+    "If you had to do a threesome, whom would you choose except your partner, Who might not judge you afterwards ?",
+    "Have you ever been caught during the act ? By whom ?",
+    "Explain what do you usually do while cuddling/kissing/ starting the session ?",
+    "Ever you or your partner had given a hickey ? If yes, Explain How it happened and Experience afterwards.",
+    "Have you ever thought about group sex, Swigging or Watching others ?",
+    "Mention the Members you can tolerate in a group s*x.",
+    "Imagine you and your partner are trapped in a room for 24hrs -How would the things start ?",
+    "Imagine your partner is forcing you to multiple org*sms in one night until you couldn't handle more -- would you give it a try or try to stop, if you will try to stop after how many org*sms ?",
+    "If you have to pick between being dominant or completely submissive for one night - What would you choose and why ?",
+    "Imagine your Partner blindfolded you and suddenly brings another person to bed - Would you continue or stop it and Why ?",
+    "Imagine you had a org*sm but you can't moan / make noise - could you control yourself ? Or why ?",
+    "Imagine your Partner tied you down with vibrator toys or sybian left you for a shaking org*sm - How would you react ?",
+    "Explain your Fantasy and how you aim to achieve it if Money is not a problem.",
+    "Name the celebrity you're interested or you can have s*x with.",
+    "Do you agree? if not then Debate the points - S*x before marriage..."
+  ];
 
-function startQuiz() {
-  document.getElementById("uid").value = "UID-" + Math.floor(Math.random()*1000000);
-  nextPage('questions');
-  showQuestion();
-}
+  // Generate questions
+  const qContainer = document.getElementById('questionsPage');
+  let qHTML = "<h2>Questions</h2>";
+  questions.forEach((q, i) => {
+    qHTML += `<label>Q${i+1}. ${q}<br><textarea name="q${i+1}" required></textarea></label><br><br>`;
+  });
+  qHTML += `<button type="button" onclick="nextPage()">Continue</button>`;
+  qContainer.innerHTML = qHTML;
 
-function showQuestion() {
-  if(currentQuestion < questions.length) {
-    let questionText = questions[currentQuestion];
-    document.getElementById("qText").innerText = questionText;
-    let qNum = currentQuestion + 1;
+  function showPage(index) {
+    pages.forEach((p, i) => p.classList.remove('active'));
+    pages[index].classList.add('active');
+    progressBar.style.width = ((index+1) / pages.length) * 100 + "%";
 
-    if(questionText.includes("Yes / No Button")) {
-      document.getElementById("answerBox").innerHTML = `
-        <label><input type="radio" name="${questionText}" value="Yes" required> Yes</label>
-        <label><input type="radio" name="${questionText}" value="No" required> No</label>`;
+    if (index === pages.length - 2) {
+      // UID page
+      const uid = "UID-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+      document.getElementById('uidText').innerText = uid;
+      document.querySelector('form').insertAdjacentHTML("beforeend", `<input type="hidden" name="uid" value="${uid}">`);
+    }
+  }
+
+  function nextPage() {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+      showPage(currentPage);
+    }
+  }
+
+  function checkDisclaimer() {
+    if (document.getElementById('agree').checked) {
+      nextPage();
     } else {
-      document.getElementById("answerBox").innerHTML = `<textarea name="${questionText}" required></textarea>`;
+      alert("You must agree to continue.");
     }
-
-    // Update progress bar
-    let progressPercent = Math.round((currentQuestion / questions.length) * 100);
-    document.getElementById("progressBar").style.width = progressPercent + "%";
-  } else {
-    document.getElementById("progressBar").style.width = "100%";
-    nextPage('credits');
-  }
-}
-
-function nextQuestion() {
-  let inputs = document.querySelectorAll("#answerBox input, #answerBox textarea");
-  let valid = false;
-  inputs.forEach(input => {
-    if((input.type === "radio" && input.checked) || (input.tagName==="TEXTAREA" && input.value.trim().length >= 10)) {
-      valid = true;
-    }
-  });
-  if(!valid) { 
-    alert("Answer too short. Minimum 10 words required (or select Yes/No)."); 
-    return; 
   }
 
-  // Append dynamic input to form if not already
-  inputs.forEach(input => {
-    if(!document.getElementById("quizForm").contains(input)){
-      document.getElementById("quizForm").appendChild(input);
-    }
-  });
-
-  currentQuestion++;
-  showQuestion();
-}
+  showPage(currentPage);
 </script>
-
 </body>
 </html>
