@@ -83,7 +83,7 @@ main { margin-top:90px; }
 <div class="page" id="pageCredits">
 <h2>Credits</h2>
 <p>Thanks for participating in Quiz 3.0</p>
-<button type="submit" class="nav-btn" onclick="saveAllAnswers(event)">Submit</button>
+<button type="button" class="nav-btn" onclick="submitForm()">Submit</button>
 </div>
 
 </form>
@@ -97,7 +97,7 @@ const pages = document.querySelectorAll('.page');
 const questionContainer = document.getElementById('questionContainer');
 const progress = document.getElementById('progress');
 const uidField = document.getElementById('uidField');
-const nextBtn = document.getElementById('nextBtn');
+let answers = [];
 
 const questions = [
 "1. Are you a Virgin ? (Yes / No)",
@@ -137,30 +137,27 @@ const questions = [
 "35. Do you agree? if not then Debate the points - S*x before marriage : (points listed)"
 ];
 
-let answers = [];
-
 function showPage(n){
-  pages.forEach((p,i)=>p.classList.remove('active'));
+  pages.forEach(p=>p.classList.remove('active'));
   pages[n-1].classList.add('active');
-  if(n===4) showQuestion(0); // Start Questions page
+  if(n===4) showQuestion(0);
 }
 
-function nextPage(){ 
-  if(currentPage<totalPages){ 
-    currentPage++; 
+function nextPage(){
+  if(currentPage<totalPages){
+    currentPage++;
     showPage(currentPage);
-  } 
+  }
 }
 
 function showQuestion(n){
-  currentQuestion=n;
+  currentQuestion = n;
   if(n>=questions.length){
-    // Last question passed, go to Credits
     currentPage = totalPages;
     showPage(currentPage);
     return;
   }
-  const val = answers[n]||"";
+  const val = answers[n] || "";
   if(n===0){
     questionContainer.innerHTML = `<h3>${questions[n]}</h3>
       <label><input type="radio" name="q1" value="Yes" ${val==="Yes"?"checked":""}> Yes</label>
@@ -169,50 +166,47 @@ function showQuestion(n){
     questionContainer.innerHTML = `<h3>${questions[n]}</h3>
       <textarea name="q${n+1}" required>${val}</textarea>`;
   }
-  progress.style.width = ((n+1)/questions.length*100)+"%";
+  progress.style.width = ((n+1)/questions.length*100) + "%";
 }
 
 function nextQuestion(){
   // Save current answer
   if(currentQuestion===0){
-    const selected = questionContainer.querySelector('input[name="q1"]:checked');
-    if(!selected){ alert("Please select Yes or No."); return; }
-    answers[currentQuestion] = selected.value;
+    const sel = questionContainer.querySelector('input[name="q1"]:checked');
+    if(!sel){ alert("Please select Yes or No"); return; }
+    answers[currentQuestion] = sel.value;
   } else {
-    const textarea = questionContainer.querySelector("textarea");
-    answers[currentQuestion] = textarea.value.trim();
-    if(answers[currentQuestion].split(/\s+/).length<10){ alert("Minimum 10 words required."); return; }
+    const txt = questionContainer.querySelector('textarea').value.trim();
+    if(txt.split(/\s+/).length<10){ alert("Minimum 10 words required"); return; }
+    answers[currentQuestion] = txt;
   }
-
-  if(currentQuestion+1 >= questions.length){
-    currentPage = totalPages;
+  if(currentQuestion+1>=questions.length){
+    currentPage=totalPages;
     showPage(currentPage);
     return;
   }
-
   showQuestion(currentQuestion+1);
 }
 
-function saveAllAnswers(e){
-  e.preventDefault();
-  // Save current question
+function submitForm(){
+  // Save current answer
   if(currentQuestion===0){
-    const selected = questionContainer.querySelector('input[name="q1"]:checked');
-    if(selected) answers[currentQuestion] = selected.value;
+    const sel = questionContainer.querySelector('input[name="q1"]:checked');
+    if(sel) answers[currentQuestion]=sel.value;
   } else {
-    const textarea = questionContainer.querySelector("textarea");
-    if(textarea) answers[currentQuestion] = textarea.value.trim();
+    const txt = questionContainer.querySelector('textarea');
+    if(txt) answers[currentQuestion]=txt.value.trim();
   }
-  // Append all answers to form
-  for(let i=0;i<answers.length;i++){
-    let hidden = document.createElement("input");
-    hidden.type="hidden";
-    hidden.name="q"+(i+1);
-    hidden.value=answers[i]||"";
-    document.getElementById('quizForm').appendChild(hidden);
-  }
+  // Append all answers
+  answers.forEach((a,i)=>{
+    const h = document.createElement("input");
+    h.type="hidden";
+    h.name="q"+(i+1);
+    h.value=a||"";
+    document.getElementById("quizForm").appendChild(h);
+  });
   uidField.value = 'UID-'+Math.random().toString(36).substr(2,9);
-  document.getElementById('quizForm').submit();
+  document.getElementById("quizForm").submit();
 }
 
 showPage(currentPage);
