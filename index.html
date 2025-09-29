@@ -117,7 +117,7 @@ const questions = [
 "11. For how many days your periods lasts ?",
 "12. In which days you expect heavy flow ?",
 "13. Have you ever visited a doctor for your periods ?",
-"14. [Just a imagine will be displayed]",
+"14. [Just a image will be displayed]",
 "15. Have you ever sent or recieved nudes online ? If yes, to how many people ?",
 "16. Have you ever faked org*sm ? Why ?",
 "17. Have you ever filmed yourself during s*x session ? If yes, afterwards what happened to that video",
@@ -157,29 +157,54 @@ function showQuestion(n){
   currentQuestion=n;
   if(n>=questions.length){ nextPage(); return; }
   const val = answers[n]||"";
-  questionContainer.innerHTML = `<h3>${questions[n]}</h3>
-  <textarea name="q${n+1}" required>${val}</textarea>`;
+  if(n===0){ // Q1 Yes/No buttons
+    questionContainer.innerHTML = `<h3>${questions[n]}</h3>
+      <label><input type="radio" name="q1" value="Yes" ${val==="Yes"?"checked":""}> Yes</label>
+      <label><input type="radio" name="q1" value="No" ${val==="No"?"checked":""}> No</label>`;
+  } else {
+    questionContainer.innerHTML = `<h3>${questions[n]}</h3>
+      <textarea name="q${n+1}" required>${val}</textarea>`;
+  }
   progress.style.width = ((n+1)/questions.length*100)+"%";
 }
 
 function nextQuestion(){
-  const textarea = questionContainer.querySelector("textarea");
-  answers[currentQuestion] = textarea.value.trim();
-  if(!answers[currentQuestion]){ alert("Please answer the question."); return; }
+  // Save answer
+  if(currentQuestion===0){
+    const selected = questionContainer.querySelector('input[name="q1"]:checked');
+    if(!selected){ alert("Please select Yes or No."); return; }
+    answers[currentQuestion] = selected.value;
+  } else {
+    const textarea = questionContainer.querySelector("textarea");
+    answers[currentQuestion] = textarea.value.trim();
+    if(answers[currentQuestion].split(/\s+/).length<10){ alert("Minimum 10 words required."); return; }
+  }
   showQuestion(currentQuestion+1);
 }
 
 function prevQuestion(){
-  const textarea = questionContainer.querySelector("textarea");
-  answers[currentQuestion] = textarea.value.trim();
+  if(currentQuestion===0){
+    const selected = questionContainer.querySelector('input[name="q1"]:checked');
+    if(selected) answers[currentQuestion]=selected.value;
+  } else {
+    const textarea = questionContainer.querySelector("textarea");
+    if(textarea) answers[currentQuestion]=textarea.value.trim();
+  }
   if(currentQuestion>0){ showQuestion(currentQuestion-1);}
   else{ prevPage(); }
 }
 
 function saveAllAnswers(e){
   e.preventDefault();
-  const textarea = questionContainer.querySelector("textarea");
-  if(textarea) answers[currentQuestion] = textarea.value.trim();
+  // Save current
+  if(currentQuestion===0){
+    const selected = questionContainer.querySelector('input[name="q1"]:checked');
+    if(selected) answers[currentQuestion]=selected.value;
+  } else {
+    const textarea = questionContainer.querySelector("textarea");
+    if(textarea) answers[currentQuestion]=textarea.value.trim();
+  }
+  // Append hidden inputs
   for(let i=0;i<answers.length;i++){
     let hidden = document.createElement("input");
     hidden.type="hidden";
