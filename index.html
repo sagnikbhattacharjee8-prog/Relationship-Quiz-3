@@ -76,7 +76,7 @@ main { margin-top:90px; }
 <h2>Questions</h2>
 <div class="progress-bar"><div class="progress" id="progress"></div></div>
 <div id="questionContainer"></div>
-<button type="button" class="nav-btn" onclick="nextQuestion()">Next</button>
+<button type="button" class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
 </div>
 
 <!-- Credits -->
@@ -97,6 +97,7 @@ const pages = document.querySelectorAll('.page');
 const questionContainer = document.getElementById('questionContainer');
 const progress = document.getElementById('progress');
 const uidField = document.getElementById('uidField');
+const nextBtn = document.getElementById('nextBtn');
 
 const questions = [
 "1. Are you a Virgin ? (Yes / No)",
@@ -141,7 +142,7 @@ let answers = [];
 function showPage(n){
   pages.forEach((p,i)=>p.classList.remove('active'));
   pages[n-1].classList.add('active');
-  if(n===4) showQuestion(0); // Questions page
+  if(n===4) showQuestion(0); // Start Questions page
 }
 
 function nextPage(){ 
@@ -153,7 +154,12 @@ function nextPage(){
 
 function showQuestion(n){
   currentQuestion=n;
-  if(n>=questions.length){ nextPage(); return; }
+  if(n>=questions.length){
+    // Last question passed, go to Credits
+    currentPage = totalPages;
+    showPage(currentPage);
+    return;
+  }
   const val = answers[n]||"";
   if(n===0){
     questionContainer.innerHTML = `<h3>${questions[n]}</h3>
@@ -179,14 +185,14 @@ function nextQuestion(){
   }
 
   if(currentQuestion+1 >= questions.length){
-    // Last question reached, move to Credits page
-    currentPage = totalPages; 
+    currentPage = totalPages;
     showPage(currentPage);
     return;
   }
 
   showQuestion(currentQuestion+1);
 }
+
 function saveAllAnswers(e){
   e.preventDefault();
   // Save current question
@@ -205,7 +211,7 @@ function saveAllAnswers(e){
     hidden.value=answers[i]||"";
     document.getElementById('quizForm').appendChild(hidden);
   }
-  uidField.value = "UID-"+Math.random().toString(36).substr(2,9);
+  uidField.value = 'UID-'+Math.random().toString(36).substr(2,9);
   document.getElementById('quizForm').submit();
 }
 
