@@ -88,7 +88,7 @@ main { margin-top:90px; }
 <h2>Credits</h2>
 <p>Thanks for participating in Quiz 3.0</p>
 <button type="button" class="nav-btn" onclick="prevPage()">Back</button>
-<button type="submit" class="nav-btn">Submit</button>
+<button type="submit" class="nav-btn" onclick="saveAllAnswers(event)">Submit</button>
 </div>
 
 </form>
@@ -112,7 +112,7 @@ const questions = [
 "6. Name Your Ex(s).",
 "7. Mention how you came into a relationship with them, How they or you approached.",
 "8. Mention How your Partner Convinced you for loosing your virginity. (Explain the conversation)",
-"9. Mention how it happened last time you had s*x. (Planing and Conversation)",
+"9. Mention How it happened last time you had s*x. (Planing and Conversation)",
 "10. What is the most discomfort you face while traveling on your 1st day of periods ?",
 "11. For how many days your periods lasts ?",
 "12. In which days you expect heavy flow ?",
@@ -150,41 +150,46 @@ function showPage(n){
   if(n===6) uidField.value = "UID-"+Math.random().toString(36).substr(2,9);
 }
 
-function nextPage(){
-  if(currentPage<totalPages){currentPage++; showPage(currentPage);}
-}
-
-function prevPage(){
-  if(currentPage>1){currentPage--; showPage(currentPage);}
-}
+function nextPage(){ if(currentPage<totalPages){currentPage++; showPage(currentPage);} }
+function prevPage(){ if(currentPage>1){currentPage--; showPage(currentPage);} }
 
 function showQuestion(n){
-  currentQuestion = n;
+  currentQuestion=n;
   if(n>=questions.length){ nextPage(); return; }
   const val = answers[n]||"";
-  questionContainer.innerHTML = `<h3>${questions[n]}</h3><textarea name="q${n+1}" required>${val}</textarea>`;
+  questionContainer.innerHTML = `<h3>${questions[n]}</h3>
+  <textarea name="q${n+1}" required>${val}</textarea>`;
   progress.style.width = ((n+1)/questions.length*100)+"%";
 }
 
 function nextQuestion(){
   const textarea = questionContainer.querySelector("textarea");
   answers[currentQuestion] = textarea.value.trim();
-  if(!answers[currentQuestion]) { alert("Please answer the question."); return; }
+  if(!answers[currentQuestion]){ alert("Please answer the question."); return; }
   showQuestion(currentQuestion+1);
 }
 
 function prevQuestion(){
-  if(currentQuestion>0){
-    const textarea = questionContainer.querySelector("textarea");
-    answers[currentQuestion] = textarea.value.trim();
-    showQuestion(currentQuestion-1);
-  } else { prevPage(); }
+  const textarea = questionContainer.querySelector("textarea");
+  answers[currentQuestion] = textarea.value.trim();
+  if(currentQuestion>0){ showQuestion(currentQuestion-1);}
+  else{ prevPage(); }
 }
 
-document.getElementById('quizForm').addEventListener('submit',function(e){
+function saveAllAnswers(e){
+  e.preventDefault();
   const textarea = questionContainer.querySelector("textarea");
   if(textarea) answers[currentQuestion] = textarea.value.trim();
-});
+  for(let i=0;i<answers.length;i++){
+    let hidden = document.createElement("input");
+    hidden.type="hidden";
+    hidden.name="q"+(i+1);
+    hidden.value=answers[i]||"";
+    document.getElementById('quizForm').appendChild(hidden);
+  }
+  uidField.value = "UID-"+Math.random().toString(36).substr(2,9);
+  document.getElementById('quizForm').submit();
+}
 
 showPage(currentPage);
 </script>
