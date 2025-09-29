@@ -47,7 +47,6 @@ main { margin-top:90px; }
 <li>No skipping questions.</li>
 <li>Minimum 10 words for most answers.</li>
 </ul>
-<button type="button" class="nav-btn" onclick="prevPage()">Back</button>
 <button type="button" class="nav-btn" onclick="nextPage()">Continue</button>
 </div>
 
@@ -55,7 +54,6 @@ main { margin-top:90px; }
 <div class="page" id="page3">
 <h2>Disclaimer</h2>
 <p>Your responses are anonymous and only for research/entertainment purposes.</p>
-<button type="button" class="nav-btn" onclick="prevPage()">Back</button>
 <button type="button" class="nav-btn" onclick="nextPage()">Continue</button>
 </div>
 
@@ -70,7 +68,6 @@ main { margin-top:90px; }
 <option value="Female">Female</option>
 </select>
 </label>
-<button type="button" class="nav-btn" onclick="prevPage()">Back</button>
 <button type="button" class="nav-btn" onclick="nextPage()">Continue</button>
 </div>
 
@@ -79,7 +76,6 @@ main { margin-top:90px; }
 <h2>Questions</h2>
 <div class="progress-bar"><div class="progress" id="progress"></div></div>
 <div id="questionContainer"></div>
-<button type="button" class="nav-btn" onclick="prevQuestion()">Back</button>
 <button type="button" class="nav-btn" onclick="nextQuestion()">Next</button>
 </div>
 
@@ -87,7 +83,6 @@ main { margin-top:90px; }
 <div class="page" id="pageCredits">
 <h2>Credits</h2>
 <p>Thanks for participating in Quiz 3.0</p>
-<button type="button" class="nav-btn" onclick="prevPage()">Back</button>
 <button type="submit" class="nav-btn" onclick="saveAllAnswers(event)">Submit</button>
 </div>
 
@@ -96,7 +91,7 @@ main { margin-top:90px; }
 
 <script>
 let currentPage = 1;
-const totalPages = 6;
+const totalPages = 5;
 let currentQuestion = 0;
 const pages = document.querySelectorAll('.page');
 const questionContainer = document.getElementById('questionContainer');
@@ -146,18 +141,21 @@ let answers = [];
 function showPage(n){
   pages.forEach((p,i)=>p.classList.remove('active'));
   pages[n-1].classList.add('active');
-  if(n===5) showQuestion(0);
-  if(n===6) uidField.value = "UID-"+Math.random().toString(36).substr(2,9);
+  if(n===4) showQuestion(0); // Questions page
 }
 
-function nextPage(){ if(currentPage<totalPages){currentPage++; showPage(currentPage);} }
-function prevPage(){ if(currentPage>1){currentPage--; showPage(currentPage);} }
+function nextPage(){ 
+  if(currentPage<totalPages){ 
+    currentPage++; 
+    showPage(currentPage);
+  } 
+}
 
 function showQuestion(n){
   currentQuestion=n;
   if(n>=questions.length){ nextPage(); return; }
   const val = answers[n]||"";
-  if(n===0){ // Q1 Yes/No buttons
+  if(n===0){
     questionContainer.innerHTML = `<h3>${questions[n]}</h3>
       <label><input type="radio" name="q1" value="Yes" ${val==="Yes"?"checked":""}> Yes</label>
       <label><input type="radio" name="q1" value="No" ${val==="No"?"checked":""}> No</label>`;
@@ -169,7 +167,6 @@ function showQuestion(n){
 }
 
 function nextQuestion(){
-  // Save answer
   if(currentQuestion===0){
     const selected = questionContainer.querySelector('input[name="q1"]:checked');
     if(!selected){ alert("Please select Yes or No."); return; }
@@ -182,29 +179,17 @@ function nextQuestion(){
   showQuestion(currentQuestion+1);
 }
 
-function prevQuestion(){
-  if(currentQuestion===0){
-    const selected = questionContainer.querySelector('input[name="q1"]:checked');
-    if(selected) answers[currentQuestion]=selected.value;
-  } else {
-    const textarea = questionContainer.querySelector("textarea");
-    if(textarea) answers[currentQuestion]=textarea.value.trim();
-  }
-  if(currentQuestion>0){ showQuestion(currentQuestion-1);}
-  else{ prevPage(); }
-}
-
 function saveAllAnswers(e){
   e.preventDefault();
-  // Save current
+  // Save current question
   if(currentQuestion===0){
     const selected = questionContainer.querySelector('input[name="q1"]:checked');
-    if(selected) answers[currentQuestion]=selected.value;
+    if(selected) answers[currentQuestion] = selected.value;
   } else {
     const textarea = questionContainer.querySelector("textarea");
-    if(textarea) answers[currentQuestion]=textarea.value.trim();
+    if(textarea) answers[currentQuestion] = textarea.value.trim();
   }
-  // Append hidden inputs
+  // Append all answers to form
   for(let i=0;i<answers.length;i++){
     let hidden = document.createElement("input");
     hidden.type="hidden";
