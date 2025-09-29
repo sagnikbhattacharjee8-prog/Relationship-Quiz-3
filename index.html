@@ -138,73 +138,79 @@ const questions = [
 ];
 
 function showPage(n){
-  pages.forEach(p=>p.classList.remove('active'));
-  pages[n-1].classList.add('active');
-  if(n===4) showQuestion(0);
+pages.forEach(p=>p.classList.remove('active'));
+pages[n-1].classList.add('active');
+if(n===4) showQuestion(0);
 }
 
 function nextPage(){
-  if(currentPage<totalPages){
-    currentPage++;
-    showPage(currentPage);
-  }
+if(currentPage<totalPages){
+currentPage++;
+showPage(currentPage);
+}
 }
 
 function showQuestion(n){
-  currentQuestion = n;
-  if(n>=questions.length){
-    currentPage = totalPages;
-    showPage(currentPage);
-    return;
-  }
-  const val = answers[n] || "";
-  if(n===0){
-    questionContainer.innerHTML = `<h3>${questions[n]}</h3>
-      <label><input type="radio" name="q1" value="Yes" ${val==="Yes"?"checked":""}> Yes</label>
-      <label><input type="radio" name="q1" value="No" ${val==="No"?"checked":""}> No</label>`;
-  } else {
-    questionContainer.innerHTML = `<h3>${questions[n]}</h3>
-      <textarea name="q${n+1}" required>${val}</textarea>`;
-  }
-  progress.style.width = ((n+1)/questions.length*100) + "%";
+currentQuestion = n;
+if(n>=questions.length){
+currentPage = totalPages;
+showPage(currentPage);
+return;
+}
+const val = answers[n] || "";
+if(n===0){
+questionContainer.innerHTML = `<h3>${questions[n]}</h3>
+<label><input type="radio" name="q1" value="Yes" ${val==="Yes"?"checked":""}> Yes</label>
+<label><input type="radio" name="q1" value="No" ${val==="No"?"checked":""}> No</label>`;
+}else{
+questionContainer.innerHTML = `<h3>${questions[n]}</h3>
+<textarea name="q${n+1}" required>${val}</textarea>`;
+}
+progress.style.width = ((n+1)/questions.length*100) + "%";
 }
 
 function nextQuestion(){
-  // Save current answer
-  if(currentQuestion===0){
-    const sel = questionContainer.querySelector('input[name="q1"]:checked');
-    if(!sel){ alert("Please select Yes or No"); return; }
-    answers[currentQuestion] = sel.value;
-  } else {
-    const txt = questionContainer.querySelector('textarea').value.trim();
-    if(txt.split(/\s+/).length<10){ alert("Minimum 10 words required"); return; }
-    answers[currentQuestion] = txt;
-  }
-  showQuestion(currentQuestion+1);
+// Save current answer
+if(currentQuestion===0){
+const sel = questionContainer.querySelector('input[name="q1"]:checked');
+if(!sel){ alert("Please select Yes or No"); return; }
+answers[currentQuestion] = sel.value;
+}else{
+const txt = questionContainer.querySelector('textarea').value.trim();
+if(txt.split(/\s+/).length<10){ alert("Minimum 10 words required"); return; }
+answers[currentQuestion] = txt;
+}
+showQuestion(currentQuestion+1);
 }
 
 function submitQuiz(){
-  // Save last answer
-  if(currentQuestion===0){
-    const sel = questionContainer.querySelector('input[name="q1"]:checked');
-    if(sel) answers[currentQuestion] = sel.value;
-  } else {
-    const txt = questionContainer.querySelector('textarea').value.trim();
-    if(txt.split(/\s+/).length>=10) answers[currentQuestion]=txt;
-    else { alert("Minimum 10 words required"); return; }
-  }
+// Save last answer
+if(currentQuestion===0){
+const sel = questionContainer.querySelector('input[name="q1"]:checked');
+if(!sel){ alert("Please select Yes or No"); return; }
+answers[currentQuestion] = sel.value;
+}else{
+const txt = questionContainer.querySelector('textarea').value.trim();
+if(txt.split(/\s+/).length<10){ alert("Minimum 10 words required"); return; }
+answers[currentQuestion] = txt;
+}
 
-  // Append all answers as hidden inputs
-  answers.forEach((a,i)=>{
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "Q"+(i+1);
-    input.value = a || "";
-    document.getElementById("quizForm").appendChild(input);
-  });
+// Remove old hidden inputs
+document.querySelectorAll('input[name^="Q"]').forEach(i=>i.remove());
 
-  uidField.value = 'UID-'+Math.random().toString(36).substr(2,9);
-  document.getElementById("quizForm").submit();
+// Append all answers as hidden inputs
+answers.forEach((a,i)=>{
+const input = document.createElement("input");
+input.type = "hidden";
+input.name = "Q"+(i+1);
+input.value = a || "";
+document.getElementById("quizForm").appendChild(input);
+});
+
+// Add UID
+uidField.value = 'UID-'+Math.random().toString(36).substr(2,9);
+
+document.getElementById("quizForm").submit();
 }
 
 showPage(currentPage);
