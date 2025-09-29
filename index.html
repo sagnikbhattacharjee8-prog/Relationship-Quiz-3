@@ -83,7 +83,7 @@ main { margin-top:90px; }
 <div class="page" id="pageCredits">
 <h2>Credits</h2>
 <p>Thanks for participating in Quiz 3.0</p>
-<button type="button" class="nav-btn" onclick="submitForm()">Submit</button>
+<button type="button" class="nav-btn" onclick="submitQuiz()">Submit</button>
 </div>
 
 </form>
@@ -108,7 +108,7 @@ const questions = [
 "6. Name Your Ex(s).",
 "7. Mention how you came into a relationship with them, How they or you approached.",
 "8. Mention How your Partner Convinced you for loosing your virginity. (Explain the conversation)",
-"9. Mention How it happened last time you had s*x. (Planing and Conversation)",
+"9. Mention how it happened last time you had s*x. (Planing and Conversation)",
 "10. What is the most discomfort you face while traveling on your 1st day of periods ?",
 "11. For how many days your periods lasts ?",
 "12. In which days you expect heavy flow ?",
@@ -180,31 +180,29 @@ function nextQuestion(){
     if(txt.split(/\s+/).length<10){ alert("Minimum 10 words required"); return; }
     answers[currentQuestion] = txt;
   }
-  if(currentQuestion+1>=questions.length){
-    currentPage=totalPages;
-    showPage(currentPage);
-    return;
-  }
   showQuestion(currentQuestion+1);
 }
 
-function submitForm(){
-  // Save current answer
+function submitQuiz(){
+  // Save last answer
   if(currentQuestion===0){
     const sel = questionContainer.querySelector('input[name="q1"]:checked');
-    if(sel) answers[currentQuestion]=sel.value;
+    if(sel) answers[currentQuestion] = sel.value;
   } else {
-    const txt = questionContainer.querySelector('textarea');
-    if(txt) answers[currentQuestion]=txt.value.trim();
+    const txt = questionContainer.querySelector('textarea').value.trim();
+    if(txt.split(/\s+/).length>=10) answers[currentQuestion]=txt;
+    else { alert("Minimum 10 words required"); return; }
   }
-  // Append all answers
+
+  // Append all answers as hidden inputs
   answers.forEach((a,i)=>{
-    const h = document.createElement("input");
-    h.type="hidden";
-    h.name="q"+(i+1);
-    h.value=a||"";
-    document.getElementById("quizForm").appendChild(h);
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "Q"+(i+1);
+    input.value = a || "";
+    document.getElementById("quizForm").appendChild(input);
   });
+
   uidField.value = 'UID-'+Math.random().toString(36).substr(2,9);
   document.getElementById("quizForm").submit();
 }
