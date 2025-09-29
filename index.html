@@ -167,6 +167,7 @@ function showQuestion(n){
 }
 
 function nextQuestion(){
+  // Save current answer
   if(currentQuestion===0){
     const selected = questionContainer.querySelector('input[name="q1"]:checked');
     if(!selected){ alert("Please select Yes or No."); return; }
@@ -176,9 +177,16 @@ function nextQuestion(){
     answers[currentQuestion] = textarea.value.trim();
     if(answers[currentQuestion].split(/\s+/).length<10){ alert("Minimum 10 words required."); return; }
   }
+
+  if(currentQuestion+1 >= questions.length){
+    // Last question reached, move to Credits page
+    currentPage = totalPages; 
+    showPage(currentPage);
+    return;
+  }
+
   showQuestion(currentQuestion+1);
 }
-
 function saveAllAnswers(e){
   e.preventDefault();
   // Save current question
